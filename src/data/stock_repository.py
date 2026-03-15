@@ -116,10 +116,13 @@ class StockRepository:
         return self._current_source
 
     def get_all_stock_codes(self) -> List[Dict[str, str]]:
-        """Get all stock codes with automatic fallback."""
-        sources = [self._current_source]
-        if self._primary_source == DataSource.AUTO:
-            sources.extend(self._get_fallback_sources(self._current_source))
+        """Get all stock codes.
+
+        Note: Always uses AkShare/Baostock for stock list since
+        Yahoo Finance doesn't support listing all A-shares.
+        """
+        # Always try Chinese sources for stock list
+        sources = [DataSource.AKSHARE, DataSource.BAOSTOCK]
 
         for source in sources:
             try:
@@ -127,7 +130,6 @@ class StockRepository:
                 result = client.get_all_stock_codes()
                 if result:
                     self._handle_success(source)
-                    self._current_source = source
                     return result
             except Exception as e:
                 logger.error(f"Error with {source.value}: {e}")
