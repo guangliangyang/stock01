@@ -4,8 +4,9 @@ A Windows desktop application for screening A-share stocks based on dividend yie
 
 ## Features
 
-- **Stock Screening**: Filter stocks by listing years, consecutive dividend years, and 5-year average yield
-- **Dual Data Sources**: AkShare (primary) with automatic fallback to Baostock
+- **Stock Screening**: Filter stocks by listing years, consecutive dividend years, and average yield
+- **Triple Data Sources**: Yahoo Finance (global), AkShare, and Baostock with automatic fallback
+- **Global Accessibility**: Yahoo Finance as default for users outside China
 - **Portfolio Management**: Track your holdings and monitor sell alerts
 - **Sell Alerts**: Get notified when stock yields drop below your threshold
 - **Bilingual UI**: Switch between English and Chinese (中文) at runtime
@@ -64,7 +65,7 @@ The executable will be created at `dist/DividendStockScreener.exe`.
 1. Configure buy criteria in the left panel:
    - **Min Listing Years**: Minimum years since IPO
    - **Min Dividend Years**: Minimum consecutive years of dividend payments
-   - **Min 5Y Avg Yield**: Minimum 5-year average dividend yield (%)
+   - **Min Avg Yield**: Minimum average dividend yield (%) calculated over the dividend years
 
 2. Click **Scan Stocks** to start screening all A-share stocks
 
@@ -88,9 +89,17 @@ The executable will be created at `dist/DividendStockScreener.exe`.
 
 Use the **Language** dropdown in the toolbar to switch between:
 - English
-- 中文 (Chinese)
+- 中文 (Chinese) - Default
 
 Changes apply immediately without restart.
+
+### Data Source Selection
+
+Use the **Data Source** dropdown in the toolbar:
+- **Auto (Fallback)**: Yahoo Finance → AkShare → Baostock
+- **AkShare**: Chinese data source (best in China)
+- **Baostock**: Chinese backup source
+- **Yahoo Finance**: Global accessibility (best outside China)
 
 ## Project Structure
 
@@ -102,8 +111,9 @@ stock01/
 │   │   ├── dividend_calculator.py
 │   │   └── stock_screener.py
 │   ├── data/                 # Data sources
-│   │   ├── akshare_client.py # Primary data source
-│   │   ├── baostock_client.py # Backup data source
+│   │   ├── akshare_client.py       # Chinese data source
+│   │   ├── baostock_client.py      # Chinese backup source
+│   │   ├── yahoo_finance_client.py # Global data source
 │   │   └── stock_repository.py
 │   ├── i18n/                 # Internationalization
 │   │   ├── locales/
@@ -130,30 +140,41 @@ Settings are stored in `data/settings.json` and include:
 |---------|---------|-------------|
 | `min_listing_years` | 10 | Minimum years since IPO |
 | `min_dividend_years` | 5 | Minimum consecutive dividend years |
-| `min_avg_yield` | 3.0 | Minimum 5-year average yield (%) |
-| `sell_threshold` | 2.5 | Sell alert threshold (%) |
-| `data_source` | auto | Data source: auto, akshare, baostock |
+| `min_avg_yield` | 5.0 | Minimum average yield (%) over dividend years |
+| `sell_threshold` | 3.0 | Sell alert threshold (%) |
+| `data_source` | auto | Data source: auto, akshare, baostock, yahoo_finance |
 | `language` | zh | UI language: en, zh |
 
 ## Data Sources
 
-### AkShare (Primary)
+### Yahoo Finance (Default for individual stocks)
+- Global accessibility (works outside China)
+- A-share data via `.SS` (Shanghai) and `.SZ` (Shenzhen) suffixes
+- Good for international users
+
+### AkShare
 - Real-time A-share data
 - Comprehensive dividend history
+- Best choice within China
 - May have rate limiting
 
-### Baostock (Backup)
+### Baostock
 - Free historical data
 - Reliable fallback option
 - Requires login (handled automatically)
 
-The app automatically switches to Baostock if AkShare fails.
+### Auto Mode Behavior
+- **Stock list**: AkShare → Baostock (Chinese sources only)
+- **Individual stock data**: Yahoo Finance → AkShare → Baostock
+
+This prioritizes global accessibility while ensuring comprehensive stock coverage.
 
 ## Dependencies
 
 - **PyQt5**: Desktop UI framework
-- **akshare**: A-share market data
-- **baostock**: Backup data source
+- **yfinance**: Yahoo Finance data (global)
+- **akshare**: A-share market data (China)
+- **baostock**: Backup data source (China)
 - **pandas**: Data manipulation
 - **pydantic**: Data validation
 - **loguru**: Logging
