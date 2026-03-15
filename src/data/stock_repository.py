@@ -73,15 +73,18 @@ class StockRepository:
         elif source == DataSource.YAHOO_FINANCE:
             return self._get_yahoo_finance_client()
         else:
-            # AUTO mode - prefer AkShare
-            return self._get_akshare_client()
+            # AUTO mode - prefer Yahoo Finance for individual stock data
+            # (works globally without China network restrictions)
+            return self._get_yahoo_finance_client()
 
     def _get_fallback_sources(self, current: DataSource) -> List[DataSource]:
         """Get fallback sources in order of preference.
 
-        Fallback chain: AkShare -> Baostock -> Yahoo Finance
+        Fallback chain for individual stock data:
+        Yahoo Finance -> AkShare -> Baostock
+        (Yahoo Finance first for global accessibility)
         """
-        all_sources = [DataSource.AKSHARE, DataSource.BAOSTOCK, DataSource.YAHOO_FINANCE]
+        all_sources = [DataSource.YAHOO_FINANCE, DataSource.AKSHARE, DataSource.BAOSTOCK]
         # Return sources excluding current, in order
         return [s for s in all_sources if s != current]
 
