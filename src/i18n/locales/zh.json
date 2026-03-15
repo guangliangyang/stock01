@@ -1,0 +1,127 @@
+{
+  "app_name": "股息价值选股系统",
+  "toolbar": {
+    "scan_stocks": "扫描股票",
+    "scan_stocks_tip": "开始筛选所有A股股票",
+    "stop": "停止",
+    "stop_tip": "停止当前筛选",
+    "check_portfolio": "检查持仓",
+    "check_portfolio_tip": "检查持仓股票的卖出预警",
+    "data_source": "数据源:",
+    "data_source_tip": "选择数据源（自动模式会在出错时自动切换）",
+    "language": "语言:",
+    "last_scan": "上次扫描:",
+    "last_scan_never": "从未"
+  },
+  "data_sources": {
+    "auto": "自动（备用切换）",
+    "akshare": "AkShare",
+    "baostock": "Baostock"
+  },
+  "tabs": {
+    "results": "筛选结果",
+    "portfolio": "我的持仓",
+    "logs": "日志"
+  },
+  "config": {
+    "buy_criteria": "买入筛选条件",
+    "sell_criteria": "卖出预警条件",
+    "min_listing_years": "最低上市年限:",
+    "min_dividend_years": "最低连续分红年数:",
+    "min_avg_yield": "最低5年平均股息率:",
+    "sell_threshold": "卖出预警阈值:",
+    "apply": "应用",
+    "reset": "重置",
+    "years_suffix": " 年",
+    "percent_suffix": " %"
+  },
+  "columns": {
+    "stock_code": "股票代码",
+    "stock_name": "股票名称",
+    "industry": "行业",
+    "listing_years": "上市年限",
+    "dividend_years": "连续分红年数",
+    "avg_yield": "5年平均股息率(%)",
+    "current_yield": "当前股息率(%)",
+    "status": "状态",
+    "buy_price": "买入价格",
+    "buy_date": "买入日期",
+    "quantity": "持有数量",
+    "current_price": "当前价格"
+  },
+  "status": {
+    "ready": "就绪",
+    "screening": "正在筛选...",
+    "stopping": "正在停止...",
+    "progress": "[{current}/{total}] {message}",
+    "complete": "筛选完成，找到 {count} 只符合条件的股票。",
+    "checking": "正在检查持仓...",
+    "alerts_found": "发现 {count} 个卖出预警！",
+    "no_alerts": "没有卖出预警，所有持仓股票状态正常。",
+    "saved": "设置已保存",
+    "reset_defaults": "设置已重置为默认值",
+    "portfolio_saved": "持仓已保存",
+    "source_changed": "数据源已切换至: {source}",
+    "language_changed": "语言已切换至: {language}"
+  },
+  "dialogs": {
+    "export": "导出",
+    "export_results": "导出结果",
+    "export_logs": "导出日志",
+    "no_results": "没有可导出的结果。",
+    "export_success": "结果已导出至 {filename}",
+    "export_error": "导出错误",
+    "export_failed": "导出失败: {error}",
+    "select_stock": "请先选择一只股票。",
+    "portfolio_empty": "持仓为空。",
+    "remove_stock": "移除股票",
+    "remove_confirm": "确定要从持仓中移除 {name}({code}) 吗？",
+    "error": "错误",
+    "screening_error": "筛选错误",
+    "alert_error": "预警检查错误",
+    "error_occurred": "发生错误:\n{error}",
+    "add_stock": "添加股票到持仓",
+    "check_portfolio": "检查持仓"
+  },
+  "buttons": {
+    "export_csv": "导出CSV",
+    "add_to_portfolio": "加入持仓",
+    "add_stock": "添加股票",
+    "remove_stock": "移除股票",
+    "check_alerts": "检查预警"
+  },
+  "add_stock_dialog": {
+    "stock_code": "股票代码:",
+    "stock_name": "股票名称:",
+    "buy_price": "买入价格:",
+    "buy_date": "买入日期:",
+    "quantity": "持有数量:",
+    "price_suffix": " 元",
+    "quantity_suffix": " 股"
+  },
+  "table": {
+    "stocks_count": "{count} 只股票",
+    "na": "N/A",
+    "alert": "预警",
+    "ok": "正常",
+    "no_data": "--"
+  },
+  "notifications": {
+    "sell_alert": "卖出预警: {name}",
+    "sell_alert_msg": "股票 {code} 股息率跌至 {yield_value}%（阈值: {threshold}%）",
+    "multiple_alerts": "卖出预警: {count} 只股票",
+    "multiple_alerts_msg": "多只股票股息率低于阈值，请查看持仓详情。",
+    "screening_complete": "筛选完成",
+    "screening_complete_msg": "找到 {count} 只符合条件的股票。"
+  },
+  "log_viewer": {
+    "filter": "过滤:",
+    "all": "全部",
+    "clear": "清除",
+    "export": "导出",
+    "auto_scroll_on": "自动滚动: 开",
+    "auto_scroll_off": "自动滚动: 关",
+    "entries": "{count} 条日志",
+    "filter_changed": "--- 过滤级别已更改为: {level} ---"
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "app_name": "Dividend Stock Screener",
+  "toolbar": {
+    "scan_stocks": "Scan Stocks",
+    "scan_stocks_tip": "Start screening all A-share stocks",
+    "stop": "Stop",
+    "stop_tip": "Stop current screening",
+    "check_portfolio": "Check Portfolio",
+    "check_portfolio_tip": "Check portfolio stocks for sell alerts",
+    "data_source": "Data Source:",
+    "data_source_tip": "Select data source (Auto will fallback on errors)",
+    "language": "Language:",
+    "last_scan": "Last scan:",
+    "last_scan_never": "Never"
+  },
+  "data_sources": {
+    "auto": "Auto (Fallback)",
+    "akshare": "AkShare",
+    "baostock": "Baostock"
+  },
+  "tabs": {
+    "results": "Screening Results",
+    "portfolio": "My Portfolio",
+    "logs": "Logs"
+  },
+  "config": {
+    "buy_criteria": "Buy Filter Criteria",
+    "sell_criteria": "Sell Alert Criteria",
+    "min_listing_years": "Min Listing Years:",
+    "min_dividend_years": "Min Dividend Years:",
+    "min_avg_yield": "Min 5Y Avg Yield:",
+    "sell_threshold": "Sell Threshold:",
+    "apply": "Apply",
+    "reset": "Reset",
+    "years_suffix": " years",
+    "percent_suffix": " %"
+  },
+  "columns": {
+    "stock_code": "Stock Code",
+    "stock_name": "Stock Name",
+    "industry": "Industry",
+    "listing_years": "Listing Years",
+    "dividend_years": "Dividend Years",
+    "avg_yield": "5Y Avg Yield (%)",
+    "current_yield": "Current Yield (%)",
+    "status": "Status",
+    "buy_price": "Buy Price",
+    "buy_date": "Buy Date",
+    "quantity": "Quantity",
+    "current_price": "Current Price"
+  },
+  "status": {
+    "ready": "Ready",
+    "screening": "Starting screening...",
+    "stopping": "Stopping...",
+    "progress": "[{current}/{total}] {message}",
+    "complete": "Screening complete. Found {count} qualifying stocks.",
+    "checking": "Checking portfolio...",
+    "alerts_found": "Found {count} sell alerts!",
+    "no_alerts": "No sell alerts. All portfolio stocks are OK.",
+    "saved": "Settings saved",
+    "reset_defaults": "Settings reset to defaults",
+    "portfolio_saved": "Portfolio saved",
+    "source_changed": "Data source changed to: {source}",
+    "language_changed": "Language changed to: {language}"
+  },
+  "dialogs": {
+    "export": "Export",
+    "export_results": "Export Results",
+    "export_logs": "Export Logs",
+    "no_results": "No results to export.",
+    "export_success": "Results exported to {filename}",
+    "export_error": "Export Error",
+    "export_failed": "Failed to export: {error}",
+    "select_stock": "Please select a stock first.",
+    "portfolio_empty": "Portfolio is empty.",
+    "remove_stock": "Remove Stock",
+    "remove_confirm": "Remove {name} ({code}) from portfolio?",
+    "error": "Error",
+    "screening_error": "Screening Error",
+    "alert_error": "Alert Check Error",
+    "error_occurred": "An error occurred:\n{error}",
+    "add_stock": "Add Stock to Portfolio",
+    "check_portfolio": "Check Portfolio"
+  },
+  "buttons": {
+    "export_csv": "Export CSV",
+    "add_to_portfolio": "Add to Portfolio",
+    "add_stock": "Add Stock",
+    "remove_stock": "Remove Stock",
+    "check_alerts": "Check Alerts"
+  },
+  "add_stock_dialog": {
+    "stock_code": "Stock Code:",
+    "stock_name": "Stock Name:",
+    "buy_price": "Buy Price:",
+    "buy_date": "Buy Date:",
+    "quantity": "Quantity:",
+    "price_suffix": " CNY",
+    "quantity_suffix": " shares"
+  },
+  "table": {
+    "stocks_count": "{count} stocks",
+    "na": "N/A",
+    "alert": "ALERT",
+    "ok": "OK",
+    "no_data": "--"
+  },
+  "notifications": {
+    "sell_alert": "Sell Alert: {name}",
+    "sell_alert_msg": "Stock {code} yield dropped to {yield_value}% (threshold: {threshold}%)",
+    "multiple_alerts": "Sell Alert: {count} Stocks",
+    "multiple_alerts_msg": "Multiple stocks have yields below threshold. Check portfolio for details.",
+    "screening_complete": "Screening Complete",
+    "screening_complete_msg": "Found {count} stocks matching your criteria."
+  },
+  "log_viewer": {
+    "filter": "Filter:",
+    "all": "ALL",
+    "clear": "Clear",
+    "export": "Export",
+    "auto_scroll_on": "Auto-scroll: ON",
+    "auto_scroll_off": "Auto-scroll: OFF",
+    "entries": "{count} log entries",
+    "filter_changed": "--- Filter changed to: {level} ---"
+  }
+}

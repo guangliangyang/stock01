@@ -1,0 +1,7 @@
+{
+    "min_listing_years": 10,
+    "min_dividend_years": 5,
+    "min_avg_yield": 5.0,
+    "sell_yield_threshold": 3.0,
+    "cache_expiration_hours": 24
+}
