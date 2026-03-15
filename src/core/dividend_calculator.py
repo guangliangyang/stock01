@@ -44,16 +44,18 @@ class DividendCalculator:
 
         return consecutive
 
-    def calculate_5y_avg_yield(
+    def calculate_avg_yield(
         self,
         records: List[DividendRecord],
-        avg_prices: Dict[int, float]
+        avg_prices: Dict[int, float],
+        years: int = 5
     ) -> float:
-        """Calculate 5-year average dividend yield.
+        """Calculate average dividend yield over specified years.
 
         Args:
             records: List of dividend records.
             avg_prices: Dictionary mapping year to average stock price.
+            years: Number of years to calculate average over.
 
         Returns:
             Average yield as percentage (e.g., 5.0 for 5%).
@@ -62,10 +64,10 @@ class DividendCalculator:
             return 0.0
 
         current_year = datetime.now().year
-        last_5_years = range(current_year - 5, current_year)
+        target_years = range(current_year - years, current_year)
 
         yields = []
-        for year in last_5_years:
+        for year in target_years:
             # Sum all dividends for this year
             year_records = [r for r in records if r.year == year]
             if not year_records:

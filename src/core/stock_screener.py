@@ -94,8 +94,8 @@ class StockScreener:
             )
 
         # Get historical prices for yield calculation
-        historical_prices = self.repository.get_historical_prices(code, years=5)
-        avg_5y_yield = self.calculator.calculate_5y_avg_yield(dividend_records, historical_prices)
+        historical_prices = self.repository.get_historical_prices(code, years=config.min_dividend_years)
+        avg_5y_yield = self.calculator.calculate_avg_yield(dividend_records, historical_prices, years=config.min_dividend_years)
 
         # Get current price and yield
         current_price = self.repository.get_current_price(code)
