@@ -16,7 +16,8 @@
   "data_sources": {
     "auto": "自动（备用切换）",
     "akshare": "AkShare",
-    "baostock": "Baostock"
+    "baostock": "Baostock",
+    "yahoo_finance": "Yahoo Finance"
   },
   "tabs": {
     "results": "筛选结果",

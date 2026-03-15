@@ -11,6 +11,9 @@ akshare_datas = collect_data_files('akshare')
 # Collect all akshare submodules
 akshare_hiddenimports = collect_submodules('akshare')
 
+# Collect yfinance submodules
+yfinance_hiddenimports = collect_submodules('yfinance')
+
 a = Analysis(
     ['src/main.py'],
     pathex=['D:\\workspace\\repos\\stock01'],
@@ -23,6 +26,7 @@ a = Analysis(
     hiddenimports=[
         'akshare',
         'baostock',
+        'yfinance',
         'pandas',
         'numpy',
         'pydantic',
@@ -38,7 +42,11 @@ a = Analysis(
         'beautifulsoup4',
         'lxml',
         'html5lib',
-    ] + akshare_hiddenimports,
+        'frozendict',
+        'peewee',
+        'websockets',
+        'multitasking',
+    ] + akshare_hiddenimports + yfinance_hiddenimports,
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],

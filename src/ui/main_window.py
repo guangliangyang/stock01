@@ -205,7 +205,8 @@ class MainWindow(QMainWindow):
         self.source_combo.addItems([
             tr("data_sources.auto"),
             tr("data_sources.akshare"),
-            tr("data_sources.baostock")
+            tr("data_sources.baostock"),
+            tr("data_sources.yahoo_finance")
         ])
         self.source_combo.setCurrentIndex(0)
         self.source_combo.currentIndexChanged.connect(self._on_source_changed)
@@ -270,6 +271,7 @@ class MainWindow(QMainWindow):
             0: DataSource.AUTO,
             1: DataSource.AKSHARE,
             2: DataSource.BAOSTOCK,
+            3: DataSource.YAHOO_FINANCE,
         }
         source = source_map.get(index, DataSource.AUTO)
         self.repository.set_data_source(source)
@@ -313,7 +315,8 @@ class MainWindow(QMainWindow):
         self.source_combo.addItems([
             tr("data_sources.auto"),
             tr("data_sources.akshare"),
-            tr("data_sources.baostock")
+            tr("data_sources.baostock"),
+            tr("data_sources.yahoo_finance")
         ])
         self.source_combo.setCurrentIndex(current_source_idx)
         self.source_combo.blockSignals(False)

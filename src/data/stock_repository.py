@@ -12,6 +12,7 @@ class DataSource(Enum):
     """Available data sources."""
     AKSHARE = "akshare"
     BAOSTOCK = "baostock"
+    YAHOO_FINANCE = "yahoo_finance"
     AUTO = "auto"  # Automatically switch on failure
 
 
@@ -34,7 +35,12 @@ class StockRepository:
         self._current_source = primary_source
         self._akshare_client = None
         self._baostock_client = None
-        self._failure_counts = {DataSource.AKSHARE: 0, DataSource.BAOSTOCK: 0}
+        self._yahoo_finance_client = None
+        self._failure_counts = {
+            DataSource.AKSHARE: 0,
+            DataSource.BAOSTOCK: 0,
+            DataSource.YAHOO_FINANCE: 0,
+        }
         self._max_failures = 3  # Switch source after this many consecutive failures
 
     def _get_akshare_client(self):
@@ -51,22 +57,38 @@ class StockRepository:
             self._baostock_client = BaostockClient()
         return self._baostock_client
 
+    def _get_yahoo_finance_client(self):
+        """Lazy load Yahoo Finance client."""
+        if self._yahoo_finance_client is None:
+            from src.data.yahoo_finance_client import YahooFinanceClient
+            self._yahoo_finance_client = YahooFinanceClient()
+        return self._yahoo_finance_client
+
     def _get_client(self, source: DataSource) -> StockDataClient:
         """Get client for specified source."""
         if source == DataSource.AKSHARE:
             return self._get_akshare_client()
         elif source == DataSource.BAOSTOCK:
             return self._get_baostock_client()
+        elif source == DataSource.YAHOO_FINANCE:
+            return self._get_yahoo_finance_client()
         else:
             # AUTO mode - prefer AkShare
             return self._get_akshare_client()
 
+    def _get_fallback_sources(self, current: DataSource) -> List[DataSource]:
+        """Get fallback sources in order of preference.
+
+        Fallback chain: AkShare -> Baostock -> Yahoo Finance
+        """
+        all_sources = [DataSource.AKSHARE, DataSource.BAOSTOCK, DataSource.YAHOO_FINANCE]
+        # Return sources excluding current, in order
+        return [s for s in all_sources if s != current]
+
     def _get_fallback_source(self, current: DataSource) -> DataSource:
-        """Get fallback source."""
-        if current == DataSource.AKSHARE:
-            return DataSource.BAOSTOCK
-        else:
-            return DataSource.AKSHARE
+        """Get primary fallback source (for backward compatibility)."""
+        fallbacks = self._get_fallback_sources(current)
+        return fallbacks[0] if fallbacks else DataSource.AKSHARE
 
     def _handle_success(self, source: DataSource):
         """Reset failure count on success."""
@@ -97,7 +119,7 @@ class StockRepository:
         """Get all stock codes with automatic fallback."""
         sources = [self._current_source]
         if self._primary_source == DataSource.AUTO:
-            sources.append(self._get_fallback_source(self._current_source))
+            sources.extend(self._get_fallback_sources(self._current_source))
 
         for source in sources:
             try:
@@ -109,15 +131,15 @@ class StockRepository:
                     return result
             except Exception as e:
                 logger.error(f"Error with {source.value}: {e}")
-                if self._handle_failure(source) and len(sources) > 1:
-                    continue
+                self._handle_failure(source)
+                continue
         return []
 
     def get_stock_info(self, code: str) -> Optional[Stock]:
         """Get stock info with automatic fallback."""
         sources = [self._current_source]
         if self._primary_source == DataSource.AUTO:
-            sources.append(self._get_fallback_source(self._current_source))
+            sources.extend(self._get_fallback_sources(self._current_source))
 
         for source in sources:
             try:
@@ -128,16 +150,15 @@ class StockRepository:
                     return result
             except Exception as e:
                 logger.error(f"Error with {source.value} for {code}: {e}")
-                if self._handle_failure(source) and len(sources) > 1:
-                    self._current_source = self._get_fallback_source(source)
-                    continue
+                self._handle_failure(source)
+                continue
         return None
 
     def get_dividend_history(self, code: str) -> List[DividendRecord]:
         """Get dividend history with automatic fallback."""
         sources = [self._current_source]
         if self._primary_source == DataSource.AUTO:
-            sources.append(self._get_fallback_source(self._current_source))
+            sources.extend(self._get_fallback_sources(self._current_source))
 
         for source in sources:
             try:
@@ -148,16 +169,15 @@ class StockRepository:
                     return result
             except Exception as e:
                 logger.error(f"Error with {source.value} for {code}: {e}")
-                if self._handle_failure(source) and len(sources) > 1:
-                    self._current_source = self._get_fallback_source(source)
-                    continue
+                self._handle_failure(source)
+                continue
         return []
 
     def get_current_price(self, code: str) -> Optional[float]:
         """Get current price with automatic fallback."""
         sources = [self._current_source]
         if self._primary_source == DataSource.AUTO:
-            sources.append(self._get_fallback_source(self._current_source))
+            sources.extend(self._get_fallback_sources(self._current_source))
 
         for source in sources:
             try:
@@ -168,16 +188,15 @@ class StockRepository:
                     return result
             except Exception as e:
                 logger.error(f"Error with {source.value} for {code}: {e}")
-                if self._handle_failure(source) and len(sources) > 1:
-                    self._current_source = self._get_fallback_source(source)
-                    continue
+                self._handle_failure(source)
+                continue
         return None
 
     def get_batch_current_prices(self, codes: List[str]) -> Dict[str, float]:
         """Get batch prices with automatic fallback."""
         sources = [self._current_source]
         if self._primary_source == DataSource.AUTO:
-            sources.append(self._get_fallback_source(self._current_source))
+            sources.extend(self._get_fallback_sources(self._current_source))
 
         for source in sources:
             try:
@@ -188,16 +207,15 @@ class StockRepository:
                     return result
             except Exception as e:
                 logger.error(f"Error with {source.value}: {e}")
-                if self._handle_failure(source) and len(sources) > 1:
-                    self._current_source = self._get_fallback_source(source)
-                    continue
+                self._handle_failure(source)
+                continue
         return {}
 
     def get_historical_prices(self, code: str, years: int = 5) -> Dict[int, float]:
         """Get historical prices with automatic fallback."""
         sources = [self._current_source]
         if self._primary_source == DataSource.AUTO:
-            sources.append(self._get_fallback_source(self._current_source))
+            sources.extend(self._get_fallback_sources(self._current_source))
 
         for source in sources:
             try:
@@ -208,7 +226,6 @@ class StockRepository:
                     return result
             except Exception as e:
                 logger.error(f"Error with {source.value} for {code}: {e}")
-                if self._handle_failure(source) and len(sources) > 1:
-                    self._current_source = self._get_fallback_source(source)
-                    continue
+                self._handle_failure(source)
+                continue
         return {}
