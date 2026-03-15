@@ -133,7 +133,7 @@ Settings are stored in `data/settings.json` and include:
 | `min_avg_yield` | 3.0 | Minimum 5-year average yield (%) |
 | `sell_threshold` | 2.5 | Sell alert threshold (%) |
 | `data_source` | auto | Data source: auto, akshare, baostock |
-| `language` | en | UI language: en, zh |
+| `language` | zh | UI language: en, zh |
 
 ## Data Sources
 

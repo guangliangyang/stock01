@@ -42,7 +42,7 @@ class AppConfig(BaseModel):
 
     # UI settings
     language: str = Field(
-        default="en",
+        default="zh",
         description="UI language (en, zh)"
     )
 
