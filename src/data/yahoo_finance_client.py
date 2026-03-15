@@ -147,9 +147,14 @@ class YahooFinanceClient:
                 logger.warning(f"No data found for {symbol} on Yahoo Finance")
                 return None
 
-            # Extract listing date if available
+            # Extract listing date from firstTradeDateMilliseconds
             listing_date = None
-            # Yahoo Finance doesn't always have IPO date for A-shares
+            first_trade_ms = info.get("firstTradeDateMilliseconds")
+            if first_trade_ms:
+                try:
+                    listing_date = datetime.fromtimestamp(first_trade_ms / 1000).date()
+                except (ValueError, OSError):
+                    pass
 
             # Get name - Yahoo may have English or Chinese name
             name = info.get("shortName") or info.get("longName") or code
